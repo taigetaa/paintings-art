@@ -1,6 +1,6 @@
 const modals = (): void => {
   let btnPressed: boolean = false;
-  const bindModal = ( triggerSelector, modalSelector, closeSelector, destroy: boolean = false): void => {
+  const bindModal = ( triggerSelector: string, modalSelector: string, closeSelector: string, destroy: boolean = false): void => {
     const triggers: NodeListOf<Element> =
       document.querySelectorAll(triggerSelector);
     const modal: HTMLElement | null = document.querySelector(modalSelector);
