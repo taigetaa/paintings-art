@@ -1,5 +1,5 @@
 const modals = (): void => {
-  let btnPressed: any = false;
+  let btnPressed: boolean = false;
   const bindModal = ( triggerSelector, modalSelector, closeSelector, destroy: boolean = false): void => {
     const triggers: NodeListOf<Element> =
       document.querySelectorAll(triggerSelector);
@@ -76,8 +76,8 @@ const modals = (): void => {
       });
 
       if (!display) {
-        const window: Element | null = document.querySelector(".popup-content") as HTMLElement;
-        window.classList.add('animated', 'fadeIn');
+        const window: HTMLElement | null = document.querySelector(".popup-content");
+        window?.classList.add('animated', 'fadeIn');
         document.querySelector<HTMLElement>(selector)!.style.display = "block";
         document.body.style.overflow = "hidden";
       }
