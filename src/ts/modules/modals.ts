@@ -1,6 +1,14 @@
 const modals = (): void => {
   let btnPressed: boolean = false;
-  const bindModal = ( triggerSelector: string, modalSelector: string, closeSelector: string, destroy: boolean = false): void => {
+
+  interface IBindModal {
+    triggerSelector: string; 
+    modalSelector: string;
+    closeSelector: string; 
+    destroy: boolean
+  }
+
+  const bindModal = ({triggerSelector, modalSelector, closeSelector, destroy}: IBindModal): void => {
     const triggers: NodeListOf<Element> =
       document.querySelectorAll(triggerSelector);
     const modal: HTMLElement | null = document.querySelector(modalSelector);
@@ -92,9 +100,9 @@ const modals = (): void => {
     });
   }
 
-  bindModal(".button-design", ".popup-design", ".popup-design .popup-close");
-  bindModal(".button-consultation", ".popup-consultation", ".popup-consultation .popup-close");
-  bindModal(".fixed-gift", ".popup-gift", ".popup-gift .popup-close", true);
+  bindModal({triggerSelector: ".button-design", modalSelector: ".popup-design", closeSelector: ".popup-design .popup-close", destroy: false});
+  bindModal({triggerSelector: ".button-consultation", modalSelector: ".popup-consultation", closeSelector: ".popup-consultation .popup-close", destroy: false});
+  bindModal({triggerSelector: ".fixed-gift", modalSelector: ".popup-gift", closeSelector: ".popup-gift .popup-close", destroy: true});
   openByScroll(".fixed-gift");
   showModalByTime(".popup-consultation", 6000);
 };
