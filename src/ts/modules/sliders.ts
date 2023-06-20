@@ -5,7 +5,7 @@ const sliders = (
   next: string
 ): void => {
   let slideIndex: number = 1;
-  let paused: any = false;
+  let paused: number = 0;
   const items: NodeListOf<HTMLElement> = document.querySelectorAll(slides);
 
   const showSlides = (n: number): void => {
