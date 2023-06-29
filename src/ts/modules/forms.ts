@@ -2,7 +2,7 @@
 
 const initForms = (): void => {
   const forms: NodeListOf<HTMLFormElement> = document.querySelectorAll("form");
-  const inputs: NodeListOf<HTMLElement> = document.querySelectorAll("input");
+  const inputs: NodeListOf<HTMLInputElement> = document.querySelectorAll("input");
   const uploads: NodeListOf<HTMLFormElement> = document.querySelectorAll('[name="upload"]');
 
   // checkNumInputs("input[name='user_phone']");
@@ -11,9 +11,9 @@ const initForms = (): void => {
     loading: "Загрузка...",
     success: "Скоро мы с Вами свяжемся!",
     failure: "Что-то пошло не так...",
-    spinner: "/src/assets/img/spinner.gif",
-    ok: "/src/assets/img/ok.png",
-    fail: "/src/assets/img/fail.png",
+    spinner: "./spinner.gif",
+    ok: "./ok.png",
+    fail: "./fail.png",
   };
 
   const path = {
@@ -22,7 +22,10 @@ const initForms = (): void => {
   };
 
   const postData: any = async (url: string, data: any) => {
-    let res = await fetch(url, {
+    const res = await fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       method: "POST",
       body: data,
     });
@@ -31,7 +34,7 @@ const initForms = (): void => {
   };
 
   const clearInputs = (): void => {
-    inputs.forEach((field: any) => {
+    inputs.forEach((field: HTMLInputElement) => {
       field.value = "";
     });
     uploads.forEach(item => {
@@ -54,7 +57,7 @@ const initForms = (): void => {
     event.addEventListener("submit", (e) => {
       e.preventDefault();
 
-      let statusMessage = document.createElement("div");
+      const statusMessage = document.createElement("div");
       statusMessage.classList.add("status");
       event.parentNode!.appendChild(statusMessage);
 
@@ -63,12 +66,12 @@ const initForms = (): void => {
         event.style.display = "none";
       }, 400);
 
-      let statusImg = document.createElement("img");
+      const statusImg = document.createElement("img");
       statusImg.setAttribute("src", messages.spinner);
       statusImg.classList.add("animated", "fadeInUp");
       statusMessage.appendChild(statusImg);
 
-      let textMessage = document.createElement("div");
+      const textMessage = document.createElement("div");
       textMessage.textContent = messages.loading;
       statusMessage.appendChild(textMessage);
 
@@ -79,6 +82,7 @@ const initForms = (): void => {
       console.log(jsonString);
       let api;
       event.closest(".popup-design") || event.classList.contains('calc_form') ? api = path.designer : (api = path.question);
+      // let api: any = event.closest(".popup-design") ? path.designer : (path.question);
       console.log(api);
 
       postData('https://simple-server-cumz.onrender.com/api/data', JSON)
