@@ -2,8 +2,10 @@
 
 const initForms = (): void => {
   const forms: NodeListOf<HTMLFormElement> = document.querySelectorAll("form");
-  const inputs: NodeListOf<HTMLInputElement> = document.querySelectorAll("input");
-  const uploads: NodeListOf<HTMLFormElement> = document.querySelectorAll('[name="upload"]');
+  const inputs: NodeListOf<HTMLInputElement> =
+    document.querySelectorAll("input");
+  const uploads: NodeListOf<HTMLFormElement> =
+    document.querySelectorAll('[name="upload"]');
 
   // checkNumInputs("input[name='user_phone']");
 
@@ -17,11 +19,11 @@ const initForms = (): void => {
   };
 
   const path = {
-    designer: "assets/server.php",
-    question: "assets/question.php",
+    designer: "https://simple-server-cumz.onrender.com/api/data",
+    question: "https://simple-server-cumz.onrender.com/api/data",
   };
 
-  const postData: any = async (url: string, data: any) => {
+  const postData = async (url: string, data: string) => {
     const res = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
@@ -37,19 +39,21 @@ const initForms = (): void => {
     inputs.forEach((field: HTMLInputElement) => {
       field.value = "";
     });
-    uploads.forEach(item => {
-      item.previousElementSibling!.textContent = 'Файл не выбран';
+    uploads.forEach((item) => {
+      if (item.previousElementSibling) {
+        item.previousElementSibling.textContent = "Файл не выбран";
+      }
     });
   };
 
-  uploads.forEach(item => {
-    item.addEventListener('input', () => {
-      console.log(item.files[0]);
-      let dots;
-      const nameSplit = item.files[0].name.split('.');
-      nameSplit[0].length > 6 ? dots = '...' : dots = '.';
-      const name: string = nameSplit[0].substring(0, 6) + dots + nameSplit[1];
-      item.previousElementSibling!.textContent = name;
+  uploads.forEach((item) => {
+    item.addEventListener("input", () => {
+      const [fileName, fileExt] = item.files[0].name.split(".");
+      const dots = fileName.length > 6 ? "..." : ".";
+      const name: string = fileName.substring(0, 6) + dots + fileExt[1];
+      if (item.previousElementSibling) {
+        item.previousElementSibling!.textContent = name;
+      }
     });
   });
 
@@ -75,35 +79,40 @@ const initForms = (): void => {
       textMessage.textContent = messages.loading;
       statusMessage.appendChild(textMessage);
 
+      const api = event.closest(".popup-design") || event.classList.contains("calc_form") ? path.designer : path.question;
+
       const formData = new FormData(event);
       const jsonObject = Object.fromEntries(formData);
-      const jsonString = JSON.stringify(jsonObject);
+      const file = formData.get("upload");
 
-      console.log(jsonString);
-      let api;
-      event.closest(".popup-design") || event.classList.contains('calc_form') ? api = path.designer : (api = path.question);
-      // let api: any = event.closest(".popup-design") ? path.designer : (path.question);
-      console.log(api);
+      const reader = new FileReader();
+      reader.onloadend = function () {
+        const base64Data = (reader?.result as string).split(",")[1];
 
-      postData('https://simple-server-cumz.onrender.com/api/data', JSON)
-        .then((res: string) => {
-          console.log(res);
-          statusImg.setAttribute("src", messages.ok);
-          textMessage.textContent = messages.success;
-        })
-        .catch(() => {
-          statusImg.setAttribute("src", messages.fail);
-          textMessage.textContent = messages.failure;
-        })
-        .finally(() => {
-          clearInputs();
-          setTimeout(() => {
-            statusMessage.remove();
-            event.style.display = 'block';
-            event.classList.remove('fadeOutUp');
-            event.classList.add('fadeInUp');
-          }, 5000);
-        });
+        jsonObject.upload = base64Data.slice(0, 10);
+
+        const json = JSON.stringify(jsonObject);
+
+        postData("https://simple-server-cumz.onrender.com/api/data", json)
+          .then((res: string) => {
+            statusImg.setAttribute("src", messages.ok);
+            textMessage.textContent = messages.success;
+          })
+          .catch(() => {
+            statusImg.setAttribute("src", messages.fail);
+            textMessage.textContent = messages.failure;
+          })
+          .finally(() => {
+            clearInputs();
+            setTimeout(() => {
+              statusMessage.remove();
+              event.style.display = "block";
+              event.classList.remove("fadeOutUp");
+              event.classList.add("fadeInUp");
+            }, 5000);
+          });
+      };
+      reader.readAsDataURL(file as Blob);
     });
   });
 };
