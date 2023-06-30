@@ -79,7 +79,7 @@ const initForms = (): void => {
       textMessage.textContent = messages.loading;
       statusMessage.appendChild(textMessage);
 
-      const api = event.closest(".popup-design") || event.classList.contains("calc_form") ? path.designer : path.question;
+      const api = (event.closest(".popup-design") || event.classList.contains("calc_form")) ? path.designer : path.question;
 
       const formData = new FormData(event);
       const jsonObject = Object.fromEntries(formData);
@@ -94,7 +94,7 @@ const initForms = (): void => {
         const json = JSON.stringify(jsonObject);
 
         postData("https://simple-server-cumz.onrender.com/api/data", json)
-          .then((res: string) => {
+          .then(() => {
             statusImg.setAttribute("src", messages.ok);
             textMessage.textContent = messages.success;
           })
