@@ -1,36 +1,31 @@
-const calc = (
-  size: any,
-  material: any,
-  options: any,
-  promocode: any,
-  result: any
-) => {
-  const sizeBlock = document.querySelector(size);
-  const materialBlock = document.querySelector(material);
-  const optionsBlock = document.querySelector(options);
-  const promocodeBlock = document.querySelector(promocode);
-  const resultBlock = document.querySelector(result);
+const calc = (size: string, material: string, options: string, promocode: string, result: string) => {
+  const sizeBlock: HTMLInputElement | null = document.querySelector(size);
+  const materialBlock: HTMLInputElement | null = document.querySelector(material);
+  const optionsBlock: HTMLInputElement | null = document.querySelector(options);
+  const promocodeBlock: HTMLInputElement | null = document.querySelector(promocode);
+  const resultBlock: HTMLInputElement | null = document.querySelector(result);
 
   let sum: number = 0;
 
   const calcFunc = () => {
-    sum = Math.round((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value));
+    if (sizeBlock && materialBlock && resultBlock && promocodeBlock) {
+      sum = Math.round((+sizeBlock!.value) * (+materialBlock!.value) + (+optionsBlock!.value));
 
-    if (sizeBlock.value == "" || materialBlock.value == "") {
-      resultBlock.textContent =
-        "Пожалуйста, выберите размер и материал картины";
-    } else if (promocode.value === "IWANTPOPART") {
-      resultBlock.textContent = Math.round(((+sizeBlock.value) * (+materialBlock.value) + (+optionsBlock.value)) * 0.7);
-      console.log(sum);
-    } else {
-      resultBlock.textContent = sum;
+      if (sizeBlock.value == "" || materialBlock.value == "") {
+        resultBlock.textContent =
+          "Пожалуйста, выберите размер и материал картины";
+      } else if (promocodeBlock.value === "IWANTPOPART") {
+        resultBlock.textContent = (`${Math.round(sum * 0.7)}`);
+      } else {
+        resultBlock.textContent = (`${sum}`);
+      }
     }
   };
 
-  sizeBlock.addEventListener("change",  calcFunc); 
-  materialBlock.addEventListener("change",  calcFunc); 
-  optionsBlock.addEventListener("change",  calcFunc); 
-  promocodeBlock.addEventListener("input", calcFunc);
+  sizeBlock!.addEventListener("change",  calcFunc); 
+  materialBlock!.addEventListener("change",  calcFunc); 
+  optionsBlock!.addEventListener("change",  calcFunc); 
+  promocodeBlock!.addEventListener("input", calcFunc);
 };
 
 export default calc;
