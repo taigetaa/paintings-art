@@ -72,11 +72,9 @@ const filter = () => {
   menu?.addEventListener('click', (e) => {
     const target = e.target as Element;
 
-    if (target && target.tagName === "LI") {
-        if (items) {
-            items.forEach(btn => btn.classList.remove('active'));
-            target.classList.add('active');
-        }
+    if (target && target.tagName === "LI" && items) {
+      items.forEach(btn => btn.classList.remove('active'));
+      target.classList.add('active');
     }
   });
 };
