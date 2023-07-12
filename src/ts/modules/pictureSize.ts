@@ -19,7 +19,7 @@ const pictureSize = (imgSelector: string) => {
     if (img) {
       const paragraphs: NodeListOf<HTMLElement> | null = block.querySelectorAll("p:not(.size-hit)");
       img.src = img.src.slice(0, -6) + ".png";
-      paragraphs.forEach((p) => {
+      paragraphs.forEach(p => {
         if (p) {
           p.style.display = "block";
         }
