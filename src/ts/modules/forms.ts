@@ -79,7 +79,6 @@ const initForms = (): void => {
       textMessage.textContent = messages.loading;
       statusMessage.appendChild(textMessage);
 
-      // const api = 
       (event.closest(".popup-design") || event.classList.contains("calc_form")) ? path.designer : path.question;
 
       const formData = new FormData(event);
