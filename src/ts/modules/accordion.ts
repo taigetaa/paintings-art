@@ -14,24 +14,6 @@ const accordion = (triggersSelector: string) => {
       }
     });
   });
-  // const blocks = document.querySelectorAll(itemsSelector);
-
-  // blocks.forEach(block => {
-  //   block.classList.add("animated", "fadeInDown");
-  // });
-
-  // if (btns) {
-  //   btns.forEach((btn: HTMLElement) => {
-  //     btn.addEventListener("click", function () {
-  //       if (!this.classList.contains("active")) {
-  //         btns.forEach((btn: HTMLElement) => {
-  //           btn.classList.remove("active", "active-style");
-  //         });
-  //         this.classList.add("active", "active-style");
-  //       }
-  //     });
-  //   });
-  // }
 };
 
 export default accordion;
